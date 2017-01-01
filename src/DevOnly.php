@@ -30,11 +30,10 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
     public function registerWordPressCodingStandards(Event $event)
     {
         if ($event->isDevMode()) {
-            $composer = $event->getComposer();
             $this->executeCommand(
-                $composer->getEventDispatcher(),
+                $this->composer->getEventDispatcher(),
                 'phpcs',
-                ['--config-set', 'installed_paths', $this->resolveWpcsPath($composer->getConfig())]
+                ['--config-set', 'installed_paths', $this->resolveWpcsPath($this->composer->getConfig())]
             );
         }
     }
