@@ -2,12 +2,26 @@
 
 namespace Eimanavicius\WordPress;
 
+use Composer\Composer;
 use Composer\Config;
 use Composer\EventDispatcher\EventDispatcher;
+use Composer\EventDispatcher\EventSubscriberInterface;
+use Composer\IO\IOInterface;
+use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 
-class DevOnly
+class DevOnly implements PluginInterface, EventSubscriberInterface
 {
+
+    /**
+     * @var \Composer\Composer
+     */
+    protected $composer;
+
+    /**
+     * @var \Composer\IO\IOInterface
+     */
+    protected $io;
 
     /**
      * @param \Composer\Script\Event $event
@@ -43,5 +57,43 @@ class DevOnly
     private static function resolve_wpcs_path(Config $config)
     {
         return $config->get('vendor-dir') . '/wp-coding-standards/wpcs';
+    }
+
+    /**
+     * Apply plugin modifications to Composer
+     *
+     * @param Composer $composer
+     * @param IOInterface $io
+     */
+    public function activate(Composer $composer, IOInterface $io)
+    {
+        $this->composer = $composer;
+        $this->io = $io;
+    }
+
+    /**
+     * Returns an array of event names this subscriber wants to listen to.
+     *
+     * The array keys are event names and the value can be:
+     *
+     * * The method name to call (priority defaults to 0)
+     * * An array composed of the method name to call and the priority
+     * * An array of arrays composed of the method names to call and respective
+     *   priorities, or 0 if unset
+     *
+     * For instance:
+     *
+     * * array('eventName' => 'methodName')
+     * * array('eventName' => array('methodName', $priority))
+     * * array('eventName' => array(array('methodName1', $priority), array('methodName2'))
+     *
+     * @return array The event names to listen to
+     */
+    public static function getSubscribedEvents()
+    {
+        return [
+            'post-update-cmd' => 'register_wpcs',
+            'post-install-cmd' => 'register_wpcs',
+        ];
     }
 }
