@@ -27,14 +27,14 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
     /**
      * @param \Composer\Script\Event $event
      */
-    public static function register_wpcs(Event $event)
+    public function registerWordPressCodingStandards(Event $event)
     {
         if ($event->isDevMode()) {
             $composer = $event->getComposer();
-            self::execute_command(
+            $this->executeCommand(
                 $composer->getEventDispatcher(),
                 'phpcs',
-                ['--config-set', 'installed_paths', self::resolve_wpcs_path($composer->getConfig())]
+                ['--config-set', 'installed_paths', $this->resolveWpcsPath($composer->getConfig())]
             );
         }
     }
@@ -44,7 +44,7 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
      * @param string $command
      * @param array $arguments
      */
-    private static function execute_command(EventDispatcher $dispatcher, $command, array $arguments)
+    private function executeCommand(EventDispatcher $dispatcher, $command, array $arguments)
     {
         $dispatcher->addListener('__exec_devonly', $command);
         $dispatcher->dispatchScript('__exec_devonly', true, $arguments);
@@ -55,7 +55,7 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
      *
      * @return string
      */
-    private static function resolve_wpcs_path(Config $config)
+    private function resolveWpcsPath(Config $config)
     {
         return $config->get('vendor-dir') . '/wp-coding-standards/wpcs';
     }
@@ -93,8 +93,8 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ScriptEvents::POST_UPDATE_CMD => 'register_wpcs',
-            ScriptEvents::POST_INSTALL_CMD => 'register_wpcs',
+            ScriptEvents::POST_UPDATE_CMD => 'registerWordPressCodingStandards',
+            ScriptEvents::POST_INSTALL_CMD => 'registerWordPressCodingStandards',
         ];
     }
 }
