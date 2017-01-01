@@ -46,8 +46,9 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
      */
     private function executeCommand(EventDispatcher $dispatcher, $command, array $arguments)
     {
-        $dispatcher->addListener('__exec_devonly', $command);
-        $dispatcher->dispatchScript('__exec_devonly', true, $arguments);
+        $name = '__exec_register_wpcs';
+        $dispatcher->addListener($name, $command);
+        $dispatcher->dispatchScript($name, true, $arguments);
     }
 
     /**
