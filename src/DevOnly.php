@@ -9,6 +9,7 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
+use Composer\Script\ScriptEvents;
 
 class DevOnly implements PluginInterface, EventSubscriberInterface
 {
@@ -92,8 +93,8 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            'post-update-cmd' => 'register_wpcs',
-            'post-install-cmd' => 'register_wpcs',
+            ScriptEvents::POST_UPDATE_CMD => 'register_wpcs',
+            ScriptEvents::POST_INSTALL_CMD => 'register_wpcs',
         ];
     }
 }
