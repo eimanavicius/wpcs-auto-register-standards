@@ -1,0 +1,20 @@
+{
+  "name": "eimanavicius/wpcs-auto-register-standards",
+  "description": "Automatically registers WordPress-Coding-Standards",
+  "type": "composer-plugin",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Nerijus Eimanavičius",
+      "email": "nerijus@eimanavicius.lt"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Eimanavicius\\WordPress\\": "src"
+    }
+  },
+  "require": {
+    "wp-coding-standards/wpcs": "*"
+  }
+}
