@@ -29,14 +29,12 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
      */
     public function registerWordPressCodingStandards(Event $event)
     {
-        if ($event->isDevMode()) {
-            $this->io->write('<info>Registering WordPress Coding Standards with PHP_CodeSniffer</info>');
-            $this->executeCommand(
-                $this->composer->getEventDispatcher(),
-                'phpcs',
-                ['--config-set', 'installed_paths', $this->resolveWpcsPath($this->composer->getConfig())]
-            );
-        }
+        $this->io->write('<info>Registering WordPress Coding Standards with PHP_CodeSniffer</info>');
+        $this->executeCommand(
+            $this->composer->getEventDispatcher(),
+            'phpcs',
+            ['--config-set', 'installed_paths', $this->resolveWpcsPath($this->composer->getConfig())]
+        );
     }
 
     /**
