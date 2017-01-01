@@ -8,7 +8,6 @@ use Composer\EventDispatcher\EventDispatcher;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
 
 class DevOnly implements PluginInterface, EventSubscriberInterface
@@ -24,11 +23,12 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
      */
     protected $io;
 
-    /**
-     * @param \Composer\Script\Event $event
-     */
-    public function registerWordPressCodingStandards(Event $event)
+    public function registerWordPressCodingStandards()
     {
+        if ($this->phpCodeSnifferIsNotInstalled()) {
+            $this->io->writeError('<info>PHP_CodeSniffer is not installed sikipping wpcs registration</info>');
+            return;
+        }
         $this->io->write('<info>Registering WordPress Coding Standards with PHP_CodeSniffer</info>');
         $this->executeCommand(
             $this->composer->getEventDispatcher(),
@@ -57,6 +57,19 @@ class DevOnly implements PluginInterface, EventSubscriberInterface
     private function resolveWpcsPath(Config $config)
     {
         return $config->get('vendor-dir') . '/wp-coding-standards/wpcs';
+    }
+
+    private function phpCodeSnifferIsNotInstalled()
+    {
+        return (
+            0 === count(
+                $this
+                    ->composer
+                    ->getRepositoryManager()
+                    ->getLocalRepository()
+                    ->findPackages('squizlabs/php_codesniffer')
+            )
+        );
     }
 
     /**
