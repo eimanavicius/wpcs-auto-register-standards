@@ -1,7 +1,7 @@
 {
   "name": "eimanavicius/wpcs-auto-register-standards",
   "description": "Automatically registers WordPress-Coding-Standards",
-  "type": "composer-plugin",
+  "type": "library",
   "license": "MIT",
   "authors": [
     {
