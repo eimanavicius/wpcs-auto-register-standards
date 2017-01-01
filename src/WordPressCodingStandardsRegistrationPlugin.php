@@ -26,7 +26,7 @@ class WordPressCodingStandardsRegistrationPlugin implements PluginInterface, Eve
     public function registerWordPressCodingStandards()
     {
         if ($this->phpCodeSnifferIsNotInstalled()) {
-            $this->io->writeError('<info>PHP_CodeSniffer is not installed sikipping wpcs registration</info>');
+            $this->io->writeError('<info>PHP_CodeSniffer is not installed skipping wpcs registration</info>');
             return;
         }
         $this->io->write('<info>Registering WordPress Coding Standards with PHP_CodeSniffer</info>');
