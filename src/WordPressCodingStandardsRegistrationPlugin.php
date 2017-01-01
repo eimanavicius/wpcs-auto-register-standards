@@ -10,7 +10,7 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\ScriptEvents;
 
-class DevOnly implements PluginInterface, EventSubscriberInterface
+class WordPressCodingStandardsRegistrationPlugin implements PluginInterface, EventSubscriberInterface
 {
 
     /**
